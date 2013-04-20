@@ -134,6 +134,10 @@ void testApp::keyPressed (int key) {
 			if(angle<-30) angle=-30;
 			kinect.setCameraTiltAngle(angle);
 			break;
+			
+		case ' ':
+			distorted.saveImage("capture.jpg");
+			break;
 	}
 }
 
