@@ -41,10 +41,14 @@ void testApp::update() {
 		
 		frames.push_back(framePixels);
 		if (frames.size() > MAX_FRAMES) {
+			delete frames[0];
 			frames.erase(frames.begin());
 		}
 		
-		maskPixels = kinect.getDepthPixels();
+		maskOfPixels.setFromPixels(kinect.getDepthPixels(), imageWidth, imageHeight, OF_IMAGE_GRAYSCALE);
+		blur(maskOfPixels, 100);
+		maskPixels = maskOfPixels.getPixels();
+		
 		gotFrame = true;
 	}
 }
@@ -59,7 +63,7 @@ void testApp::draw() {
 		for (int x = 0; x < imageWidth; x++) {
 			for (int y = 0; y < imageHeight; y++) {
 				for (int c = 0; c < 3; c++) {
-					float maskFraction = 1 - maskPixels[y * imageWidth + x] / 255.0;
+					float maskFraction = maskPixels[y * imageWidth + x] / 255.0;
 					int frameIndex = maskFraction * (numFrames - 1);
 					//float remainder = (maskFraction * (numFrames - 1) - frameIndex) / (numFrames - 1);
 					
@@ -74,11 +78,11 @@ void testApp::draw() {
 		mask.setFromPixels(maskPixels, imageWidth, imageHeight, OF_IMAGE_GRAYSCALE);
 		mask.draw(10, 320, 400, 300);
 		
-		distorted.setFromPixels(distortedPixels, imageWidth, imageHeight, OF_IMAGE_COLOR);
-		distorted.draw(10, 10, 400, 300);
-		
 		frame0.setFromPixels(frames[frames.size() - 1], imageWidth, imageHeight, OF_IMAGE_COLOR);
-		frame0.draw(420, 10, 400, 300);
+		frame0.draw(10, 10, 400, 300);
+		
+		distorted.setFromPixels(distortedPixels, imageWidth, imageHeight, OF_IMAGE_COLOR);
+		distorted.draw(420, 10, 800, 600);
 	}
 	
 	// draw instructions

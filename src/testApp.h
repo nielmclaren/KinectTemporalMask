@@ -32,6 +32,8 @@ public:
 	vector<unsigned char *> frames;
 	unsigned char * maskPixels;
 	
+	ofPixels maskOfPixels;
+	
 	ofImage frame0;
 	ofImage mask;
 	ofImage distorted;
