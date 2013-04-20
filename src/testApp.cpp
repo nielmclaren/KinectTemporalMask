@@ -136,6 +136,9 @@ void testApp::keyPressed (int key) {
 			break;
 			
 		case ' ':
+			ofImage capture;
+			capture.grabScreen(0, 0, ofGetScreenWidth(), ofGetScreenHeight());
+			capture.saveImage("screenshot.jpg");
 			distorted.saveImage("capture.jpg");
 			break;
 	}
